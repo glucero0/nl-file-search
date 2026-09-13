@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "nl-file-search": {
+      "command": "C:\\\\source\\\\repos\\\\nl-file-search\\\\.venv\\\\Scripts\\\\python.exe",
+      "args": ["-m", "nl_file_search.mcp_server"]
+    }
+  }
+}

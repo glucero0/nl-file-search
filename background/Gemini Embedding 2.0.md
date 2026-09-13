@@ -1,0 +1,3 @@
+The API is called Gemini Embedding 2. It converts text, images, video, and audio into vector numbers that represent their meaning, allowing for quick searches, grouping, and finding similar media.
+
+To use it, you would set up a pipeline that recurses through a directory, identifies the media files, reads their data, encodes it into base64, and sends it in an API request to the Gemini Embedding endpoint to retrieve the vector numbers.

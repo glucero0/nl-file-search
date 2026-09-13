@@ -1,0 +1,17 @@
+# Copy values into %USERPROFILE%\nl-file-search\config.yaml
+# (nl-search creates a starter file there on first run.)
+
+sources:
+  - path: "D:\\Notes"
+  - path: "C:\\Users\\you\\Pictures"
+exclude:
+  - "**/.git/**"
+  - "**/node_modules/**"
+  - "**/.env"
+  - "**/*credential*"
+  - "**/*.pem"
+embed:
+  model: gemini-embedding-2
+  dimensions: 768
+video:
+  max_seconds: 120
