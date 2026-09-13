@@ -32,17 +32,19 @@ python -m pip install -U pip
 python -m pip install -e .
 ```
 
-Create the data directory and files **outside the repo**:
+Data lives **outside the repo**, in `%USERPROFILE%\nl-file-search\` (for example `C:\Users\you\nl-file-search\`). The SQLite index is:
+
+**`%USERPROFILE%\nl-file-search\index.sqlite`**
 
 ```
 %USERPROFILE%\nl-file-search\
   config.yaml
   .env
-  index.sqlite
+  index.sqlite          # vector + metadata database (created on first ingest)
   logs\
 ```
 
-`nl-search` creates that folder and a starter `config.yaml` / empty `.env` on first run. Then:
+`nl-search` creates that folder and a starter `config.yaml` / empty `.env` on first run. The `.sqlite` file is created on the first successful `nl-search ingest`. It is gitignored and should never be committed. Then:
 
 1. Put your key in `%USERPROFILE%\nl-file-search\.env` as `GEMINI_API_KEY=...` (never commit this file).
 2. Edit `%USERPROFILE%\nl-file-search\config.yaml` and add the folders to index.
@@ -99,6 +101,7 @@ Tools:
 ## Security
 
 - The API key lives only in `%USERPROFILE%\nl-file-search\.env`.
+- The SQLite database lives only in `%USERPROFILE%\nl-file-search\index.sqlite`.
 - Ingest skips credential-like files and default junk directories (`.git`, `node_modules`, `.venv`, `__pycache__`).
 - `get_file` only returns rows already in the index. It will not open `..\..\.env` or other paths that were never ingested.
 - Retrieved snippets go to Cursor the same way an open file would. Do not index folders that must never leave the machine.
