@@ -14,7 +14,7 @@ data/
 *.sqlite-journal
 *.sqlite-wal
 *.sqlite-shm
-.cursor/mcp.json
+.cursor/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/

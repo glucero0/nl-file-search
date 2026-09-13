@@ -11,7 +11,7 @@ Greenfield Python project. Index local files with **gemini-embedding-2**, store 
 - **Store:** SQLite + `sqlite-vec` at `%USERPROFILE%\nl-file-search\index.sqlite`
 - **Config:** `%USERPROFILE%\nl-file-search\config.yaml` — list of source folders and excludes
 - **Secrets:** `%USERPROFILE%\nl-file-search\.env` — `GEMINI_API_KEY` only
-- **Cursor:** FastMCP stdio (`search_files`, `get_file`); example [`.cursor/mcp.json.example`](../.cursor/mcp.json.example)
+- **Cursor:** FastMCP stdio (`search_files`, `get_file`); configure MCP in Cursor settings (see README)
 - **Parsers:** registry from day one so Phase 2/3 are new modules, not a rewrite
 - **Network:** ingest and search both call Gemini (query embedding). No offline search.
 

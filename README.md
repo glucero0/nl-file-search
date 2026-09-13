@@ -76,9 +76,20 @@ nl-search status
 
 ## Cursor MCP
 
-1. Copy [`.cursor/mcp.json.example`](.cursor/mcp.json.example) to `.cursor/mcp.json` (or your user MCP config).
-2. Point `command` at this repo’s `.venv\Scripts\python.exe`.
-3. Restart Cursor MCP.
+Add a server in Cursor’s MCP settings (user or project). Point `command` at this repo’s `.venv\Scripts\python.exe`:
+
+```json
+{
+  "mcpServers": {
+    "nl-file-search": {
+      "command": "C:\\\\source\\\\repos\\\\nl-file-search\\\\.venv\\\\Scripts\\\\python.exe",
+      "args": ["-m", "nl_file_search.mcp_server"]
+    }
+  }
+}
+```
+
+Restart Cursor MCP after saving. Do not put `GEMINI_API_KEY` in that config; the server reads `%USERPROFILE%\nl-file-search\.env`.
 
 Tools:
 
