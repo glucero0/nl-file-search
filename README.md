@@ -2,6 +2,8 @@
 
 Natural-language search over local files. Phase 1 indexes markdown, plain text, images, videos, and PDFs with **Gemini Embedding 2**, stores vectors in SQLite (`sqlite-vec`), and exposes search through a CLI and a Cursor MCP server.
 
+**Work in progress.** Designed by Gary Lucero. Coded by Cursor.
+
 A later Python app can import the same `nl_file_search.search` module. Office documents are Phase 2; music is Phase 3. See [background/ROADMAP.md](background/ROADMAP.md).
 
 ## Phase 1 file types
