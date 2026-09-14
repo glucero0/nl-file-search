@@ -10,7 +10,7 @@ import sys
 from nl_file_search.config import load_config
 from nl_file_search.embed import Embedder
 from nl_file_search.ingest import ingest
-from nl_file_search.paths import ensure_user_data_dir, index_path, logs_dir, require_api_key
+from nl_file_search.paths import ensure_logs_dir, index_path, logs_dir, require_api_key
 from nl_file_search.search import get_indexed_file, hit_to_dict, search_index
 from nl_file_search.security import safe_resolve
 from nl_file_search.store import VectorStore
@@ -44,9 +44,12 @@ def main(argv: list[str] | None = None) -> int:
     get_p.add_argument("path")
 
     args = parser.parse_args(argv)
+    try:
+        cfg = load_config()
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
     _setup_logging()
-    ensure_user_data_dir()
-    cfg = load_config()
 
     if args.command == "ingest":
         api_key = require_api_key()
@@ -114,7 +117,7 @@ def _location(hit: dict) -> str:
 
 
 def _setup_logging() -> None:
-    ensure_user_data_dir()
+    ensure_logs_dir()
     log_file = logs_dir() / "nl-search.log"
     logging.basicConfig(
         level=logging.INFO,
