@@ -49,34 +49,61 @@ python -m pip install -U pip
 python -m pip install -e .
 ```
 
-Data lives **outside the repo**, in your home directory:
+Copy the example config and env files into `~/nl-file-search` (your home directory on every OS). Run this from the repo, with the venv active. `nl-search` does not create these files.
+
+```bash
+python scripts/copy_profile.py
+```
+
+Then:
+
+1. Edit `~/nl-file-search/config.yaml` and set the folders to index.
+2. Edit `~/nl-file-search/.env` and set `GEMINI_API_KEY=...` (never commit this file).
+
+If a key was ever pasted into a chat or ticket, revoke it in Google AI Studio and issue a new one.
+
+Data lives **outside the repo**:
 
 | | Path |
 | --- | --- |
-| Data folder | `~/nl-file-search/` (Windows: `%USERPROFILE%\nl-file-search\`) |
+| Data folder | `~/nl-file-search/` |
 | SQLite index | `~/nl-file-search/index.sqlite` |
 
 ```
 ~/nl-file-search/
-  config.yaml
-  .env
-  index.sqlite          # vector + metadata database (created on first ingest)
-  logs/
+  config.yaml           # copied from config.example.yaml; you edit this
+  .env                  # copied from .env.example; you put the API key here
+  index.sqlite          # created on the first successful nl-search ingest
+  logs/                 # created when a command runs after config exists
 ```
 
-`nl-search` creates that folder and a starter `config.yaml` / empty `.env` on first run. The `.sqlite` file is created on the first successful `nl-search ingest`. It is gitignored and should never be committed. Then:
+### Paths in `config.yaml`
 
-1. Put your key in `~/nl-file-search/.env` as `GEMINI_API_KEY=...` (never commit this file).
-2. Edit `~/nl-file-search/config.yaml` and add the folders to index.
+List each folder under `sources` with a `path` value. Use **forward slashes** in double quotes; that form works on Windows, macOS, and Linux:
 
-If a key was ever pasted into a chat or ticket, revoke it in Google AI Studio and issue a new one.
+```yaml
+sources:
+  - path: "~/Notes"
+  - path: "~/Pictures"
+  - path: "/absolute/path/to/folder"
+```
+
+`~` is expanded to your home directory. Paths are resolved to absolute locations when ingest runs.
+
+On Windows, a backslash in a **double-quoted** string is a YAML escape (`\U` in `C:\Users` is not a folder separator). Use one of these instead:
+
+| Form | Example |
+| --- | --- |
+| Forward slashes | `"C:/Users/you/Notes"` |
+| Single quotes | `'C:\Users\you\Notes'` |
+| Escaped backslashes | `"C:\\Users\\you\\Notes"` |
 
 Example `config.yaml` (also in [config.example.yaml](config.example.yaml)):
 
 ```yaml
 sources:
-  - path: "D:\\Notes"              # Windows
-  - path: "/Users/you/Pictures"    # macOS / Linux
+  - path: "~/Notes"
+  - path: "~/Pictures"
 exclude:
   - "**/.git/**"
   - "**/node_modules/**"

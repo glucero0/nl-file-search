@@ -1,9 +1,11 @@
-# Copy values into %USERPROFILE%\nl-file-search\config.yaml
-# (nl-search creates a starter file there on first run.)
-
+# Copy to ~/nl-file-search/config.yaml (see README Setup).
+# nl-search does not create this file.
+#
+# Use forward slashes in double-quoted paths. "C:\Users\..." is invalid YAML
+# because \U is a Unicode escape. "~/Notes" works on every OS.
 sources:
-  - path: "D:\\Notes"
-  - path: "C:\\Users\\you\\Pictures"
+  - path: "~/Notes"
+  - path: "~/Pictures"
 exclude:
   - "**/.git/**"
   - "**/node_modules/**"

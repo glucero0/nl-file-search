@@ -30,50 +30,40 @@ def logs_dir() -> Path:
     return user_data_dir() / "logs"
 
 
-STARTER_CONFIG = """\
-# Folders to index. Unknown extensions are skipped.
-sources: []
-  # - path: "D:\\\\Notes"
-exclude: []
-embed:
-  model: gemini-embedding-2
-  dimensions: 768
-video:
-  max_seconds: 120
-"""
-
-STARTER_ENV = """\
-# Gemini API key. Never copy this file into the git repo.
-GEMINI_API_KEY=
-"""
+def missing_config_message(path: Path | None = None) -> str:
+    target = path or config_path()
+    return (
+        f"Missing {target}. Copy config.example.yaml to that path from the repo "
+        "(see README Setup). nl-search does not create config.yaml or .env."
+    )
 
 
-def ensure_user_data_dir() -> Path:
-    """Create the profile directory, starter config, and empty .env if missing."""
-    root = user_data_dir()
-    root.mkdir(parents=True, exist_ok=True)
-    logs_dir().mkdir(parents=True, exist_ok=True)
-    cfg = config_path()
-    if not cfg.exists():
-        cfg.write_text(STARTER_CONFIG, encoding="utf-8")
-    env = env_path()
-    if not env.exists():
-        env.write_text(STARTER_ENV, encoding="utf-8")
-    return root
+def ensure_logs_dir() -> Path:
+    """Create the log directory under an existing profile folder."""
+    dest = logs_dir()
+    dest.mkdir(parents=True, exist_ok=True)
+    return dest
 
 
 def load_user_env() -> None:
     """Load GEMINI_API_KEY from the profile .env. Does not override a real env var."""
-    ensure_user_data_dir()
-    load_dotenv(env_path(), override=False)
+    env = env_path()
+    if env.exists():
+        load_dotenv(env, override=False)
 
 
 def require_api_key() -> str:
     load_user_env()
     key = os.environ.get("GEMINI_API_KEY", "").strip()
     if not key:
+        env = env_path()
+        if not env.exists():
+            raise SystemExit(
+                f"Missing {env}. Copy .env.example to that path from the repo "
+                "(see README Setup) and set GEMINI_API_KEY. Do not put the key in the repo."
+            )
         raise SystemExit(
             "GEMINI_API_KEY is missing. Set it in "
-            f"{env_path()} or in the environment. Do not put the key in the repo."
+            f"{env} or in the environment. Do not put the key in the repo."
         )
     return key
